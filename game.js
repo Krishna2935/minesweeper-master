@@ -23,6 +23,8 @@ var GAME = {
 
 var clearBoard = function () {
     // TODO: remove child nodes of element with id "gameboard"
+    document.getElementById("gameboard").childNodes.remove();
+    GAME.layout=new Array();
     // TODO: reset layout to new array
 }
 
@@ -32,11 +34,14 @@ var openCell = function (row, col) {
 
     // TODO: remove "closed" class and add "open" class to the cell element
     // https://www.w3schools.com/jsref/prop_element_classlist.asp
-    
+    cell.classList.remove("closed");
+    cell.classList.add("open");
     // TODO: call createBackFaceContent to create the content of cell
     // and append the content to the cell element as a child
-
+    cell.createBackFaceContent(rows,cols);
+    cell.appendChild();
     // TODO: increment total cell opened GAME.openCellCount
+    GAME.openCellCount++;
 }
 
 var openBoundary = function (row, col) {
@@ -88,6 +93,7 @@ var updateHallOfFame = function(time, outcome) {
 
 var gameOver = function () {
     //TODO: call stopTimer method to end the clock
+    stopTimer();
     updateHallOfFame(elapsedTimeInSeconds(), false);
 }
 
@@ -262,6 +268,7 @@ var createBackFaceContent = function (row, col) {
 // write a function that returns a random integer between min(inclusive) and max(exclusive)
 var randomInt = function (min, max) {
     //TODO: see https://www.w3schools.com/js/js_random.asp
+    return Math.floor(Math.random()*(max-min))+min;
 }
 
 // this is implemented for you already
@@ -367,6 +374,10 @@ var startGame = function(row, col) {
 var getFormattedTime = function(timeInSeconds) {
     // TODO: given time in seconds return formatted time, e.g.
     //       178 seconds = 00:02:58
+    var s= timeInSeconds%60;
+    var m=timeInSeconds/60;
+    var h=timeInSeconds/(60*60);
+    return h+":"+m+":"+s;
 }
 
 // get elapsed time in seconds, see how it is implemented
@@ -384,7 +395,7 @@ var startTimer = function () {
     //https://www.w3schools.com/jsref/met_win_setinterval.asp
     GAME.timer = setInterval(function () {
         document.getElementById("timer").innerText = getFormattedTime(elapsedTimeInSeconds());
-    }, 700); // can you figure why 700 milliseconds when we want to udate clock every second?
+    }, 700); // can you figure why 700 milliseconds when we want to udate clock every second? To 
 }
 
 // create game
